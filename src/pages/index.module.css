@@ -23,12 +23,26 @@
   border: solid black;
 }
 
+.holdcontainer {
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+  justify-content: center;
+}
+
 .holdstyle {
   display: flex;
   flex-wrap: wrap;
   width: 250px;
   height: 500px;
   border: solid black;
+}
+
+.nextcontainer {
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+  justify-content: center;
 }
 
 .nextstyle {
