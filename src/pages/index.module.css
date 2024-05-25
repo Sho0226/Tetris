@@ -6,4 +6,37 @@
   height: 100vh;
   min-height: 100vh;
   padding: 0 0.5rem;
+  background-color: #fff;
 }
+
+.tetriscontainer {
+  display: flex;
+  justify-content: space-around;
+}
+
+.boardstyle {
+  display: flex;
+  flex-wrap: wrap;
+  width: 250px;
+  height: 500px;
+  margin: 0 30px;
+  border: solid black;
+}
+
+.holdstyle {
+  display: flex;
+  flex-wrap: wrap;
+  width: 250px;
+  height: 500px;
+  border: solid black;
+}
+
+.nextstyle {
+  display: flex;
+  flex-wrap: wrap;
+  width: 250px;
+  height: 500px;
+  border: solid black;
+}
+
+/* 1ブロック25px */
