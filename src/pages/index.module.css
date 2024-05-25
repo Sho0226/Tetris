@@ -27,14 +27,13 @@
   display: flex;
   flex-flow: column;
   align-items: center;
-  justify-content: center;
 }
 
 .holdstyle {
   display: flex;
   flex-wrap: wrap;
-  width: 250px;
-  height: 500px;
+  width: 125px;
+  height: 125px;
   border: solid black;
 }
 
@@ -42,15 +41,19 @@
   display: flex;
   flex-flow: column;
   align-items: center;
-  justify-content: center;
 }
 
 .nextstyle {
   display: flex;
   flex-wrap: wrap;
-  width: 250px;
-  height: 500px;
+  width: 125px;
+  height: 125px;
   border: solid black;
+}
+
+.text {
+  font-size: 150%;
+  font-weight: bold;
 }
 
 /* 1ブロック25px */
