@@ -33,32 +33,20 @@
   border-color: black;
 }
 
-.holdcontainer {
-  display: flex;
-  flex-flow: column;
-  align-items: center;
-}
-
-.holdstyle {
-  display: flex;
-  flex-wrap: wrap;
-  width: 125px;
-  height: 125px;
-  border: solid black;
-}
-
-.nextcontainer {
-  display: flex;
-  flex-flow: column;
-  align-items: center;
-}
-
+.holdstyle,
 .nextstyle {
   display: flex;
   flex-wrap: wrap;
   width: 125px;
   height: 125px;
   border: solid black;
+}
+
+.nextcontainer,
+.holdcontainer {
+  display: flex;
+  flex-flow: column;
+  align-items: center;
 }
 
 .text {

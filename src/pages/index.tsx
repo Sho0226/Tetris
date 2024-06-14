@@ -2,6 +2,7 @@ import { useState } from 'react';
 import styles from './index.module.css';
 
 const Home = () => {
+  const [tetromino, setTetromino] = useState(0);
   const [board, setBoard] = useState([
     [1, 0, 0, 0, 0, 0, 0, 0, 0, 1],
     [1, 0, 0, 0, 0, 0, 0, 0, 0, 1],
@@ -76,9 +77,19 @@ const Home = () => {
       [0, 0, 0],
     ],
   ];
-  console.table(board);
 
-  const clickHandler = (x: number, y: number) => {};
+  const newBoard = structuredClone(board);
+  console.table(newBoard);
+  const clickHandler = (x: number, y: number) => {
+    newBoard[y][x] = tetromino;
+
+    if (tetromino === 1) {
+      setTetromino(0);
+    } else {
+      setTetromino(1);
+    }
+    setBoard(newBoard);
+  };
 
   return (
     <div className={styles.container}>
@@ -95,9 +106,8 @@ const Home = () => {
                 className={styles.cellstyle}
                 key={`${x}-${y}`}
                 onClick={() => clickHandler(x, y)}
-              >
-                {cell}
-              </div>
+                style={{ background: cell === 1 ? '#8f8f8f' : '' }}
+              />
             )),
           )}
         </div>
