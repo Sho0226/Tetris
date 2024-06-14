@@ -17,8 +17,8 @@
 .boardstyle {
   display: flex;
   flex-wrap: wrap;
-  width: 300px;
-  height: 500px;
+  width: 250px;
+  height: 475px;
   margin: 0 30px;
   outline: solid black;
 }
