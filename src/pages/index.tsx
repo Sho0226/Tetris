@@ -50,7 +50,6 @@ const Home = () => {
     ],
     // S
     //緑
-
     [
       [0, 1, 1],
       [1, 1, 0],
@@ -78,6 +77,9 @@ const Home = () => {
       [0, 0, 0],
     ],
   ];
+  console.table(board);
+
+  const clickHandler = (x: number, y: number) => {};
 
   return (
     <div className={styles.container}>
@@ -87,7 +89,19 @@ const Home = () => {
 
           <div className={styles.holdstyle} />
         </div>
-        <div className={styles.boardstyle} />
+        <div className={styles.boardstyle}>
+          {board.map((row, y) =>
+            row.map((cell, x) => (
+              <div
+                className={styles.cellstyle}
+                key={`${x}-${y}`}
+                onClick={() => clickHandler(x, y)}
+              >
+                {cell}
+              </div>
+            )),
+          )}
+        </div>
         <div className={styles.nextcontainer}>
           <span className={styles.text}> NEXT</span>
           <div className={styles.nextstyle} />
