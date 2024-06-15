@@ -40,6 +40,7 @@ const Home = () => {
   const [board, setBoard] = useState<number[][]>(
     Array.from({ length: 20 }, () => Array(10).fill(0)),
   );
+  const [box, setBox] = useState<number[][]>(Array.from({ length: 4 }, () => Array(4).fill(0)));
 
   function getRandomTetromino() {
     return tetrominoes[Math.floor(Math.random() * tetrominoes.length)];
@@ -159,7 +160,18 @@ const Home = () => {
       <div className={styles.tetriscontainer}>
         <div className={styles.holdcontainer}>
           <span className={styles.text}>HOLD</span>
-          <div className={styles.holdstyle} />
+
+          <div className={styles.holdstyle}>
+            {box.map((row, y) =>
+              row.map((cell, x) => (
+                <div
+                  className={`${styles.cellstyle} ${cell === 0 ? '' : styles.linestyle}`}
+                  key={`${x}-${y}`}
+                  style={{ background: getColor(cell) }}
+                />
+              )),
+            )}
+          </div>
         </div>
         <div className={styles.boardstyle}>
           {newBoard.map((row, y) =>
@@ -174,7 +186,17 @@ const Home = () => {
         </div>
         <div className={styles.nextcontainer}>
           <span className={styles.text}> NEXT</span>
-          <div className={styles.nextstyle} />
+          <div className={styles.nextstyle}>
+            {box.map((row, y) =>
+              row.map((cell, x) => (
+                <div
+                  className={`${styles.cellstyle} ${cell === 0 ? '' : styles.linestyle}`}
+                  key={`${x}-${y}`}
+                  style={{ background: getColor(cell) }}
+                />
+              )),
+            )}
+          </div>
         </div>
       </div>
     </div>
