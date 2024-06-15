@@ -165,7 +165,7 @@ const Home = () => {
           {newBoard.map((row, y) =>
             row.map((cell, x) => (
               <div
-                className={styles.cellstyle}
+                className={`${styles.cellstyle} ${cell === 0 ? '' : styles.linestyle}`}
                 key={`${x}-${y}`}
                 style={{ background: getColor(cell) }}
               />
