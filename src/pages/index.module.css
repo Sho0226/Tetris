@@ -46,18 +46,16 @@
   flex-wrap: wrap;
   align-items: center;
   justify-content: center;
-  width: 125px;
-  height: 125px;
   outline: solid black;
+}
 
-  .nextcontainer {
-    display: flex;
-    flex-flow: column;
-    align-items: center;
-  }
+.nextcontainer {
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+}
 
-  .text {
-    font-size: 150%;
-    font-weight: bold;
-  }
+.text {
+  font-size: 150%;
+  font-weight: bold;
 }

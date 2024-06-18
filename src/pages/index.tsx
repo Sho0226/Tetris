@@ -37,10 +37,14 @@ interface Position {
 const Home: React.FC = () => {
   const [tetromino, setTetromino] = useState<number[][]>(tetrominoes[0]);
   const [position, setPosition] = useState<Position>({ x: 3, y: 0 });
-  const [nextTetromino, setNextTetromino] = useState<number[][]>(getRandomTetromino());
+  const [nextTetromino, setNextTetromino] = useState<number[][] | null>(null);
   const [board, setBoard] = useState<number[][]>(
     Array.from({ length: 20 }, () => Array(10).fill(0)),
   );
+
+  useEffect(() => {
+    setNextTetromino(getRandomTetromino());
+  }, []);
 
   function getRandomTetromino() {
     return tetrominoes[Math.floor(Math.random() * tetrominoes.length)];
@@ -155,10 +159,20 @@ const Home: React.FC = () => {
 
   const newBoard = mergeBoardAndTetromino(board, tetromino, position);
 
-  // 次のテトリミノを中央に表示するためのオフセットを計算
+  // 各テトリミノの幅と高さを計算し、中央に配置
   const getCenteredTetromino = (tetromino: number[][]): number[][] => {
-    const maxWidth = 5;
-    const maxHeight = 5;
+    let maxWidth = 5;
+    let maxHeight = 5;
+    const tetrominoType = tetromino[0][0];
+    if (tetrominoType === 1) {
+      // I型
+      maxWidth = 6;
+      maxHeight = 5;
+    } else if (tetrominoType === 2) {
+      // O型
+      maxWidth = 4;
+      maxHeight = 4;
+    }
     const offsetX = Math.floor((maxWidth - tetromino[0].length) / 2);
     const offsetY = Math.floor((maxHeight - tetromino.length) / 2);
 
@@ -172,7 +186,26 @@ const Home: React.FC = () => {
     return centeredTetromino;
   };
 
-  const centeredNextTetromino = getCenteredTetromino(nextTetromino);
+  const getNextStyle = (): React.CSSProperties => {
+    let maxWidth = 5;
+    let maxHeight = 4;
+    if (nextTetromino) {
+      const tetrominoType = nextTetromino[0][0];
+      if (tetrominoType === 1) {
+        // I型
+        maxWidth = 6;
+        maxHeight = 5;
+      } else if (tetrominoType === 2) {
+        // O型
+        maxWidth = 4;
+        maxHeight = 4;
+      }
+    }
+    return {
+      width: `${maxWidth * 25}px`,
+      height: `${maxHeight * 25}px`,
+    };
+  };
 
   return (
     <div className={styles.container}>
@@ -190,17 +223,19 @@ const Home: React.FC = () => {
         </div>
         <div className={styles.nextcontainer}>
           <span className={styles.text}>NEXT</span>
-          <div className={styles.nextstyle}>
-            {centeredNextTetromino.map((row, y) =>
-              row.map((cell, x) => (
-                <div
-                  className={`${styles.cellstyle} ${cell === 0 ? '' : styles.linestyle}`}
-                  key={`${x}-${y}`}
-                  style={{ background: getColor(cell) }}
-                />
-              )),
-            )}
-          </div>
+          {nextTetromino && (
+            <div className={styles.nextstyle} style={getNextStyle()}>
+              {getCenteredTetromino(nextTetromino).map((row, y) =>
+                row.map((cell, x) => (
+                  <div
+                    className={`${styles.cellstyle} ${cell === 0 ? '' : styles.linestyle}`}
+                    key={`${x}-${y}`}
+                    style={{ background: getColor(cell) }}
+                  />
+                )),
+              )}
+            </div>
+          )}
         </div>
       </div>
     </div>
