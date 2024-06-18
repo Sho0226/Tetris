@@ -53,13 +53,13 @@ const Home = () => {
   ): number[][] => {
     const newBoard = board.map((row) => row.slice());
     tetromino.forEach((row, dy) => {
-      row.forEach((value, dx) => {
+      row.forEach((cell, dx) => {
         if (
-          value !== 0 &&
+          cell !== 0 &&
           newBoard[position.y + dy] !== undefined &&
           newBoard[position.y + dy][position.x + dx] !== undefined
         ) {
-          newBoard[position.y + dy][position.x + dx] = value;
+          newBoard[position.y + dy][position.x + dx] = cell;
         }
       });
     });
@@ -69,8 +69,8 @@ const Home = () => {
   const isCollision = (board: number[][], tetromino: number[][], position: Position): boolean => {
     return tetromino.some((row, dy) =>
       row.some(
-        (value, dx) =>
-          value !== 0 &&
+        (cell, dx) =>
+          cell !== 0 &&
           (board[position.y + dy] === undefined ||
             board[position.y + dy][position.x + dx] === undefined ||
             board[position.y + dy][position.x + dx] !== 0),
@@ -114,8 +114,8 @@ const Home = () => {
     }
   }, [tetromino, board, position]);
 
-  const getColor = useCallback((value: number) => {
-    switch (value) {
+  const getColor = useCallback((cell: number) => {
+    switch (cell) {
       case 1:
         return 'cyan'; // I
       case 2:
