@@ -40,23 +40,24 @@
   border-left: 1px solid;
 }
 
-.holdstyle,
 .nextstyle {
+  position: relative;
   display: flex;
   flex-wrap: wrap;
-  width: 125px;
-  height: 126px;
-  border: solid black;
-}
-
-.nextcontainer,
-.holdcontainer {
-  display: flex;
-  flex-flow: column;
   align-items: center;
-}
+  justify-content: center;
+  width: 125px;
+  height: 125px;
+  outline: solid black;
 
-.text {
-  font-size: 150%;
-  font-weight: bold;
+  .nextcontainer {
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+  }
+
+  .text {
+    font-size: 150%;
+    font-weight: bold;
+  }
 }

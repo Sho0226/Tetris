@@ -34,13 +34,13 @@ interface Position {
   y: number;
 }
 
-const Home = () => {
+const Home: React.FC = () => {
   const [tetromino, setTetromino] = useState<number[][]>(tetrominoes[0]);
   const [position, setPosition] = useState<Position>({ x: 3, y: 0 });
+  const [nextTetromino, setNextTetromino] = useState<number[][]>(getRandomTetromino());
   const [board, setBoard] = useState<number[][]>(
     Array.from({ length: 20 }, () => Array(10).fill(0)),
   );
-  const [box, setBox] = useState<number[][]>(Array.from({ length: 4 }, () => Array(4).fill(0)));
 
   function getRandomTetromino() {
     return tetrominoes[Math.floor(Math.random() * tetrominoes.length)];
@@ -95,15 +95,15 @@ const Home = () => {
     } else {
       const newBoard = mergeBoardAndTetromino(board, tetromino, position);
       setBoard(newBoard);
-      const newTetromino = getRandomTetromino();
-      setTetromino(newTetromino);
+      setTetromino(nextTetromino);
+      setNextTetromino(getRandomTetromino());
       setPosition({ x: 3, y: 0 });
-      if (isCollision(newBoard, newTetromino, { x: 3, y: 0 })) {
+      if (isCollision(newBoard, nextTetromino, { x: 3, y: 0 })) {
         alert('Game Over');
         setBoard(Array.from({ length: 20 }, () => Array(10).fill(0)));
       }
     }
-  }, [board, tetromino, position]);
+  }, [board, tetromino, position, nextTetromino]);
 
   const rotateTetromino = useCallback(() => {
     const newTetromino: number[][] = tetromino[0].map((_, index) =>
@@ -155,24 +155,28 @@ const Home = () => {
 
   const newBoard = mergeBoardAndTetromino(board, tetromino, position);
 
+  // 次のテトリミノを中央に表示するためのオフセットを計算
+  const getCenteredTetromino = (tetromino: number[][]): number[][] => {
+    const maxWidth = 5;
+    const maxHeight = 5;
+    const offsetX = Math.floor((maxWidth - tetromino[0].length) / 2);
+    const offsetY = Math.floor((maxHeight - tetromino.length) / 2);
+
+    const centeredTetromino = Array.from({ length: maxHeight }, () => Array(maxWidth).fill(0));
+    tetromino.forEach((row, y) => {
+      row.forEach((cell, x) => {
+        centeredTetromino[offsetY + y][offsetX + x] = cell;
+      });
+    });
+
+    return centeredTetromino;
+  };
+
+  const centeredNextTetromino = getCenteredTetromino(nextTetromino);
+
   return (
     <div className={styles.container}>
       <div className={styles.tetriscontainer}>
-        <div className={styles.holdcontainer}>
-          <span className={styles.text}>HOLD</span>
-
-          <div className={styles.holdstyle}>
-            {box.map((row, y) =>
-              row.map((cell, x) => (
-                <div
-                  className={`${styles.cellstyle} ${cell === 0 ? '' : styles.linestyle}`}
-                  key={`${x}-${y}`}
-                  style={{ background: getColor(cell) }}
-                />
-              )),
-            )}
-          </div>
-        </div>
         <div className={styles.boardstyle}>
           {newBoard.map((row, y) =>
             row.map((cell, x) => (
@@ -185,9 +189,9 @@ const Home = () => {
           )}
         </div>
         <div className={styles.nextcontainer}>
-          <span className={styles.text}> NEXT</span>
+          <span className={styles.text}>NEXT</span>
           <div className={styles.nextstyle}>
-            {box.map((row, y) =>
+            {centeredNextTetromino.map((row, y) =>
               row.map((cell, x) => (
                 <div
                   className={`${styles.cellstyle} ${cell === 0 ? '' : styles.linestyle}`}
