@@ -111,6 +111,8 @@ const Home: React.FC = () => {
     }
   }, [board, tetromino, position, nextTetromino]);
 
+  const LineTetromino = () => {};
+
   const rotateTetromino = useCallback(() => {
     const newTetromino: number[][] = tetromino[0].map((_, index) =>
       tetromino.map((row) => row[index]).reverse(),
