@@ -98,13 +98,15 @@ const Home: React.FC = () => {
       setPosition(newPosition);
     } else {
       const newBoard = mergeBoardAndTetromino(board, tetromino, position);
-      setBoard(newBoard);
-      setTetromino(nextTetromino);
-      setNextTetromino(getRandomTetromino());
-      setPosition({ x: 3, y: 0 });
-      if (isCollision(newBoard, nextTetromino, { x: 3, y: 0 })) {
-        alert('Game Over');
-        setBoard(Array.from({ length: 20 }, () => Array(10).fill(0)));
+      if (nextTetromino) {
+        setBoard(newBoard);
+        setTetromino(nextTetromino);
+        setNextTetromino(getRandomTetromino());
+        setPosition({ x: 3, y: 0 });
+        if (isCollision(newBoard, nextTetromino, { x: 3, y: 0 })) {
+          alert('Game Over');
+          setBoard(Array.from({ length: 20 }, () => Array(10).fill(0)));
+        }
       }
     }
   }, [board, tetromino, position, nextTetromino]);
