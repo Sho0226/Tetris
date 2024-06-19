@@ -50,9 +50,11 @@
 }
 
 .nextcontainer {
+  position: fixed;
   display: flex;
   flex-flow: column;
   align-items: center;
+  padding-left: 70vh;
 }
 
 .text {
