@@ -119,6 +119,28 @@ const Home: React.FC = () => {
     }
   }, [board, tetromino, position, nextTetromino]);
 
+  const hardDropTetromino = useCallback(() => {
+    let newPosition = { x: position.x, y: position.y };
+    while (!isCollision(board, tetromino, { x: newPosition.x, y: newPosition.y + 1 })) {
+      newPosition = { x: newPosition.x, y: newPosition.y + 1 };
+    }
+    setPosition(newPosition);
+    setBoard((prevBoard) => {
+      let newBoard = mergeBoardAndTetromino(prevBoard, tetromino, newPosition);
+      newBoard = removeCompleteLines(newBoard);
+      if (nextTetromino) {
+        setTetromino(nextTetromino);
+        setNextTetromino(getRandomTetromino());
+        setPosition({ x: 3, y: 0 });
+        if (isCollision(newBoard, nextTetromino, { x: 3, y: 0 })) {
+          alert('Game Over');
+          return Array.from({ length: 20 }, () => Array(10).fill(0));
+        }
+      }
+      return newBoard;
+    });
+  }, [board, tetromino, nextTetromino, position]);
+
   const rotateTetromino = useCallback(() => {
     const newTetromino: number[][] = tetromino[0].map((_, index) =>
       tetromino.map((row) => row[index]).reverse(),
@@ -150,22 +172,44 @@ const Home: React.FC = () => {
   }, []);
 
   useEffect(() => {
+    let moveInterval: NodeJS.Timeout;
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
+        const direction = e.key === 'ArrowLeft' ? -1 : 1;
+        moveTetromino(direction, 0);
+        moveInterval = setInterval(() => moveTetromino(direction, 0), 100); // 100ミリ秒ごとに横移動
+      } else if (e.key === 'ArrowDown') {
+        dropTetromino();
+      } else if (e.key === 'ArrowUp') {
+        rotateTetromino();
+      } else if (e.key === ' ') {
+        hardDropTetromino();
+      }
+    };
+
+    const handleKeyUp = (e: KeyboardEvent) => {
+      if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
+        clearInterval(moveInterval);
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    window.addEventListener('keyup', handleKeyUp);
+
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+      window.removeEventListener('keyup', handleKeyUp);
+      clearInterval(moveInterval);
+    };
+  }, [moveTetromino, dropTetromino, rotateTetromino, hardDropTetromino]);
+
+  useEffect(() => {
     const interval = setInterval(() => {
       dropTetromino();
     }, 1000);
     return () => clearInterval(interval);
   }, [dropTetromino]);
-
-  useEffect(() => {
-    const handleKeyPress = (e: KeyboardEvent) => {
-      if (e.key === 'ArrowLeft') moveTetromino(-1, 0);
-      if (e.key === 'ArrowRight') moveTetromino(1, 0);
-      if (e.key === 'ArrowDown') dropTetromino();
-      if (e.key === 'ArrowUp') rotateTetromino();
-    };
-    window.addEventListener('keydown', handleKeyPress);
-    return () => window.removeEventListener('keydown', handleKeyPress);
-  }, [moveTetromino, dropTetromino, rotateTetromino]);
 
   const newBoard = mergeBoardAndTetromino(board, tetromino, position);
 
