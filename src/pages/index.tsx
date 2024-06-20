@@ -82,6 +82,13 @@ const Home: React.FC = () => {
     );
   };
 
+  const removeCompleteLines = (board: number[][]): number[][] => {
+    const newBoard = board.filter((row) => !row.every((cell) => cell !== 0));
+    const linesRemoved = board.length - newBoard.length;
+    const emptyRows = Array.from({ length: linesRemoved }, () => Array(board[0].length).fill(0));
+    return [...emptyRows, ...newBoard];
+  };
+
   const moveTetromino = useCallback(
     (dx: number, dy: number) => {
       const newPosition = { x: position.x + dx, y: position.y + dy };
@@ -97,7 +104,8 @@ const Home: React.FC = () => {
     if (!isCollision(board, tetromino, newPosition)) {
       setPosition(newPosition);
     } else {
-      const newBoard = mergeBoardAndTetromino(board, tetromino, position);
+      let newBoard = mergeBoardAndTetromino(board, tetromino, position);
+      newBoard = removeCompleteLines(newBoard);
       if (nextTetromino) {
         setBoard(newBoard);
         setTetromino(nextTetromino);
@@ -110,8 +118,6 @@ const Home: React.FC = () => {
       }
     }
   }, [board, tetromino, position, nextTetromino]);
-
-  const LineTetromino = () => {};
 
   const rotateTetromino = useCallback(() => {
     const newTetromino: number[][] = tetromino[0].map((_, index) =>
