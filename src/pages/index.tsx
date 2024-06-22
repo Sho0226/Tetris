@@ -213,10 +213,11 @@ const Home: React.FC = () => {
 
   const newBoard = mergeBoardAndTetromino(board, tetromino, position);
 
+  let maxWidth = 5;
+  let maxHeight = 4;
+
   // 各テトリミノの幅と高さを計算し、中央に配置
   const getCenteredTetromino = (tetromino: number[][]): number[][] => {
-    let maxWidth = 5;
-    let maxHeight = 4;
     const tetrominoType = tetromino[0][0];
     if (tetrominoType === 1) {
       // I型
@@ -241,8 +242,6 @@ const Home: React.FC = () => {
   };
 
   const getNextStyle = (): React.CSSProperties => {
-    let maxWidth = 5;
-    let maxHeight = 4;
     if (nextTetromino) {
       const tetrominoType = nextTetromino[0][0];
       if (tetrominoType === 1) {
